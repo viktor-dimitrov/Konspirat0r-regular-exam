@@ -28,3 +28,25 @@ jobs:
       run: echo "Konspirat0r is my Softuni username"
     - name: Execute unit tests
       run: npm run test:unit
+
+  ui_test:
+
+    runs-on: ubuntu-latest
+    needs: build_test_unit
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Use Node.js version 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install dependecies    
+      run: npm install
+    - name: Install Playwright browsers  
+      run: npx playwright install      
+    - name: Start application in bg mode
+      run: npm run start &
+    - name: Start UI tests    
+      run: npm run test:ui
